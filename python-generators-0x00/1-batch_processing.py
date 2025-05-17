@@ -1,15 +1,9 @@
-
-#!/usr/bin/python3
-import mysql.connector
-from mysql.connector import Error
-
 def stream_users_in_batches(batch_size):
-    """Generator function to stream rows from user_data table in batches."""
     try:
         connection = mysql.connector.connect(
             host="localhost",
-            user="chess",  
-            password="ronaldo",  
+            user="chess",
+            password="ronaldo",
             database="ALX_prodev"
         )
         if connection.is_connected():
@@ -17,11 +11,11 @@ def stream_users_in_batches(batch_size):
             cursor.execute("SELECT user_id, name, email, age FROM user_data;")
             while True:
                 batch = cursor.fetchmany(batch_size)
-                if not batch:  # No more rows to fetch
+                if not batch:
                     break
                 yield batch
     except Error as e:
-        print(f"Error streaming data: {e}")
+        print(f"Error: {e}")
     finally:
         if 'cursor' in locals():
             cursor.close()
@@ -29,8 +23,7 @@ def stream_users_in_batches(batch_size):
             connection.close()
 
 def batch_processing(batch_size):
-    """Generator function to process batches and filter users over age 25."""
     for batch in stream_users_in_batches(batch_size):
         filtered_batch = [user for user in batch if user['age'] > 25]
-        if filtered_batch:  # Yield only if there are users over 25
+        if filtered_batch:
             yield filtered_batch
