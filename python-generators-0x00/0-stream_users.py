@@ -9,8 +9,8 @@ def stream_users():
         # Connect to the ALX_prodev database
         connection = mysql.connector.connect(
             host="localhost",
-            user="chess",  # Replace with your MySQL username
-            password="ronaldo",  # Replace with your MySQL password
+            user="chess",  
+            password="ronaldo",  
             database="ALX_prodev"
         )
         if connection.is_connected():
